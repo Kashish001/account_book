@@ -1,0 +1,26 @@
+
+        <div class="page-centered">
+            <div class="logo">
+                <p>Logo</p>
+            </div>
+            <h1 class="login-h1">{{title}}</h1>
+            <form method="post" action="/customers/{{customer._id}}">
+            <input type="hidden" name="_method" value="PUT">
+                <div class="form-group">
+                    <input type="text" name = "name" id="name" placeholder="Name" required class="form-control form-input" value={{customer.name}}>
+                </div>
+                <div class="form-group">
+                    <input type="text" name= "sonOff" id="sonOff" placeholder="Father Name" required class="form-control form-input" value={{customer.sonOff}}>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="address" id="address" placeholder="Village" required class="form-control form-input" value={{customer.address}}>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="careOff" id="careOff" placeholder="Care Off" class="form-control form-input" value={{customer.careOff}}>
+                </div>
+                <div class="form-group">
+                    <input type="tel" name="contact" id="contact" placeholder="Contact Number" required class="form-control form-input" value={{customer.contact}}>
+                </div>
+                <input type="submit" class="form-submit" value="Save">
+            </form>
+        </div>

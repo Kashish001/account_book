@@ -1,0 +1,23 @@
+        <div class="page-centered">
+            <div class="logo">
+                <p>Logo</p>
+            </div>
+            <h1 class="login-h1">{{title}}</h1>
+            <form method="post" action="/transaction/{{data._id}}">
+            <input type="hidden" name="_method" value="PUT">
+            <input type='hidden' name='_index' value="{{transactionIndex}}">
+                <div class="form-group" style="display: flex;">
+                    <p style="padding-right: 45px; font-weight: bold;">Date: </p>
+                    <input type="date" name="date" id="date" required class="form-control form-input" value="{{data.date}}">
+                </div>
+                <div class="form-group" style="display: flex;">
+                    <p style="padding-right: 39px; font-weight: bold;">Credit: </p>
+                    <input type="number" name="credit" id="credit" placeholder="Credit" required class="form-control form-input" value="{{data.credit}}">
+                </div>
+                <div class="form-group" style="display: flex;">
+                    <p style="padding-right: 0px;font-weight: bold;">Total Amount: </p>
+                    <input type="number" name="totalAmount" id="credit" placeholder="Total Amount" required class="form-control form-input" value="{{data.totalAmount}}">
+                </div>
+                <input type="submit" class="form-submit" value="Save">
+            </form>
+        </div>

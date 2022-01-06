@@ -1,0 +1,52 @@
+<div class="page-centered">
+    <h1 class="login-h1">{{title}}</h1>
+</div>
+<form method="post" action="/bill/{{data._id}}">
+    <input type="hidden" name="_method" value="PUT">
+    <input type='hidden' name='_index' value="{{billIndex}}">
+    <div class="form-group" style="margin-top: 20px;">
+        <div class="col-sm-12" style="overflow: auto;">
+        <div class="panel panel-default">
+            <table id="table" class="table table-responsive table-hover">
+                <thead>
+                    <tr>
+                      <th class="text-center">S.No</th>
+                      <th class="text-center">Item Name</th>
+                      <th class="text-center">Quantity (KG)</th>
+                      <th class="text-center">Rate</th>
+                      <th class="text-center">Total Amount</th>
+                    </tr> 
+                </thead>
+                <tbody id="tbody">
+                    <tr>
+                        <td>{{indexing billIndex}}</td>
+                        <td>{{data.item_name}}</td>
+                        <td><input type="text" name="item_quant" id="item_quant" onkeyup="change(this)" value={{data.item_quant}}></td>
+                        <td><input type="text" name="item_rate" id="item_rate" onkeyup="change(this)" value={{data.item_rate}}></td>
+                        <td><input type="text" disabled id = "item_total" name="item_total" value={{data.item_total}}></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="hidden" name="item_name" value="{{data.item_name}}">
+        <input type="hidden" id="total" name="item_total" value="{{data.item_total}}">
+    </div>
+    <input type="submit" class="form-submit" value="Save">
+</form>
+<script>
+    function change(element) {
+        var total = document.getElementById("item_total");
+        var quant = document.getElementById("item_quant").value;
+        var rate = document.getElementById("item_rate").value;
+        if(rate == "") {
+            total.value = 0;
+        } else if(quant == "") {
+            total.value = rate;
+        } else {
+            total.value = Number(rate) * Number(quant);
+        }
+        document.getElementById("total").value = total.value;
+    }
+</script>

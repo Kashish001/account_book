@@ -1,0 +1,125 @@
+{{#if data}}
+  <div class='search_div'>
+    <input type="text" id="search" placeholder="Search...">
+    <i class="material-icons icon">search</i>
+  </div>
+    <div class="col-sm-12" style="overflow: auto;">
+        <div class="panel panel-default">
+            <table id="table" class="table table-responsive table-hover">
+                <thead>
+                    <tr>
+                      <th class="text-center">#</th>
+                      <th class="text-center">Name</th>
+                      <th class="text-center">S/O</th>
+                      <th class="text-center">Contact Number</th>
+                      <th class="text-center">Care Off</th>
+                      <th class="text-center">Village</th>
+                      <th class="text-center">Bill</th>
+                      <th class="text-center">Transactions</th>
+                    </tr> 
+                </thead>
+                <tbody>
+                    {{#each data}}
+                    {{#ifCond (total transactions 'debit')}}
+                    <tr id="row">
+                      <td>{{indexing @index}}</td>
+                      <td>{{../name}}</td>
+                      {{#if ../sonOff}}
+                      <td>{{../sonOff}}</td>
+                      {{else}}
+                      <td>NA</td>
+                      {{/if}}
+                      <td>{{../contact}}</td>
+                      {{#if ../careOff}}
+                      <td>{{../careOff}}</td>
+                      {{else}}
+                      <td>NA</td>
+                      {{/if}}
+                      {{#if ../address}}
+                      <td>{{../address}}</td>
+                      {{else}}
+                      <td>NA</td>
+                      {{/if}}
+                      <td data-toggle="collapse" data-target=".bill{{@index}}">
+                        <button class="btn btn-default btn-sm" style="margin-left: 3px;">View Bill</button>
+                      </td>
+                      <td data-toggle="collapse" data-target=".table{{@index}}">
+                        <button class="btn btn-default btn-sm" style="margin-right: 5px;">View Transactions</button>
+                      </td>
+                      <td class="edit">
+                        <a href="customers/delete/{{../_id}}"><i class="material-icons" style="transform: translate(-10px, 0px);">delete</i></a>
+                      </td>
+
+                    </tr>
+                    <tr class="collapse bill{{@index}}">
+                      <td colspan="999">
+                        <div>
+                          <table class="table table-responsive table-striped">
+                            <thead>
+                              <tr>
+                                <th class="text-center">Item No.</th>
+                                <th class="text-center">Item Name</th>
+                                <th class="text-center">Quantity (KG)</th>
+                                <th class="text-center">Rate</th>
+                                <th class="text-center">Total Amount</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            {{#each ../bill}}
+                              <tr>
+                                <td>{{indexing @index}}</td>
+                                <td class="success">{{item_name}}</td>
+                                <td class="danger">{{item_quant}}</td>
+                                <td class='amount'>{{item_rate}}</td>
+                                <td class='amount'>{{item_total}}</td>
+                              </tr>
+                            {{/each}}
+                          </tbody>
+                          </table>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr class="collapse table{{@index}}">
+                      <td colspan="999">
+                        <div>
+                          <table class="table table-responsive table-striped">
+                            <thead>
+                              <tr>
+                                <th class="text-center">Date</th>
+                                <th class="text-center">Credit</th>
+                                <th class="text-center">Debit</th>
+                                <th class="text-center">Total Amount</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            {{#each ../transactions}}
+                              <tr>
+                                <td>{{date}}</td>
+                                <td class="success">{{credit}}</td>
+                                <td class="danger">{{debit}}</td>
+                                <td class='amount'>{{totalAmount}}</td>
+                              </tr>
+                            {{/each}}
+                            <tr>
+                              <td class="total" style="font-weight: bolder;">Total</td>
+                              <td style="font-weight: bolder;">{{total ../transactions 'credit'}}</td>
+                              <td style="font-weight: bolder;">{{total ../transactions 'debit'}}</td>
+                              <td style="font-weight: bolder;">{{total ../transactions 'totalAmount'}}</td>
+                            </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </td>
+                    </tr>
+                    {{/ifCond}}
+                  {{/each}}
+                </tbody>
+            </table>
+      </tbody>
+    </table>
+  </div>
+</div>
+{{else}}
+    <h3>No Customer's Data Found.</h3>
+{{/if}}

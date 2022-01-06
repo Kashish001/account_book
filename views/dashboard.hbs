@@ -1,0 +1,149 @@
+<div class='search_div'>
+    <input type="text" id="search" placeholder="Search...">
+    <i class="material-icons icon">search</i>
+  </div>
+<input type="hidden" name="data" id="data", value="{{json customers}}">
+{{>_stats}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let values = document.getElementById('data').value;
+        values = JSON.parse(values)
+        let data = []
+        let labels = []
+        let count = 0
+        for (let customer of values) {
+            let lastDate = new Date(customer['transactions'][0]['date'])
+            let currDate = new Date();
+            let diff = parseInt((currDate - lastDate) / (1000 * 60 * 60 * 24), 10)
+            data.push(diff)
+            labels.push(customer['name'])
+        }
+        const ctx = document.getElementById('myChart');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'No of days',
+                    data: data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Customers Above 7 Days'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                indexAxis: 'y',
+            }
+        });
+</script>
+{{#if customers}}
+<div class="col-sm-12" style="overflow: auto; margin-top: 60px; transform: translate(25px, 0px);">
+        <div class="panel panel-default">
+            <table id="table" class="table table-responsive table-hover">
+                <thead>
+                    <tr>
+                      <th class="text-center">#</th>
+                      <th class="text-center">Name</th>
+                      <th class="text-center">S/O</th>
+                      <th class="text-center">Contact Number</th>
+                      <th class="text-center">Care Off</th>
+                      <th class="text-center">Village</th>
+                      <th class="text-center">Transactions</th>
+                    </tr> 
+                </thead>
+                <tbody>
+                    {{#each customers}}
+                    <tr id="row">
+                      <td>{{indexing @index}}</td>
+                      <td>{{name}}</td>
+                      <td>{{sonOff}}</td>
+                      <td>{{contact}}</td>
+                      {{#if careOff}}
+                      <td>{{careOff}}</td>
+                      {{else}}
+                      <td>NA</td>
+                      {{/if}}
+                      <td>{{address}}</td>
+                      <td data-toggle="collapse" data-target=".table{{@index}}">
+                        <button class="btn btn-default btn-sm" style="margin-right: 5px;">View Transactions</button>
+                      </td>
+                      <td class="edit">
+                        <a href="customers/update/{{_id}}"><i class="material-icons" style="transform: translate(-30px, 0px);">edit</i></a>
+                        <a href="customers/delete/{{_id}}"><i class="material-icons" style="transform: translate(-10px, 0px);">delete</i></a>
+                      </td>
+
+                    </tr>
+                    <tr class="collapse table{{@index}}">
+                      <td colspan="999">
+                        <div>
+                          <table class="table table-responsive table-striped">
+                            <thead>
+                              <tr>
+                                <th class="text-center">Date</th>
+                                <th class="text-center">Credit</th>
+                                <th class="text-center">Debit</th>
+                                <th class="text-center">Total Amount</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            {{#each transactions}}
+                              <tr>
+                                <td>{{date}}</td>
+                                <td class="success">{{credit}}</td>
+                                <td class="danger">{{debit}}</td>
+                                <td class='amount'>{{totalAmount}}</td>
+                                <td class="edit">
+                                  <a href="transaction/update/{{../_id}}/{{@index}}"><i class="material-icons" style="transform: translate(-30px, 0px);">edit</i></a>
+                                  <a href="transaction/delete/{{../_id}}/{{@index}}"><i class="material-icons" style="transform: translate(-10px, 0px);">delete</i></a>
+                                </td>
+                              </tr>
+                            {{/each}}
+                            <tr>
+                              <td class="total" style="font-weight: bolder;">Total</td>
+                              <td style="font-weight: bolder;">{{total transactions 'credit'}}</td>
+                              <td style="font-weight: bolder;">{{total transactions 'debit'}}</td>
+                              <td style="font-weight: bolder;">{{total transactions 'totalAmount'}}</td>
+                            </tr>
+                            <tr>
+                              <td class="update" colspan="5">
+                                <a href="/transaction/add/{{_id}}" class="btn-floating btn-small waves-effect waves-light blue"><i class="fa fa-plus"></i></a>
+                              </td>
+                            </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </td>
+                    </tr>
+                  {{/each}}
+                </tbody>
+            </table>
+      </tbody>
+    </table>
+  </div>
+</div>
+{{/if}}

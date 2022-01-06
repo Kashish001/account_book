@@ -1,0 +1,166 @@
+
+        <div class="page-centered">
+            <div class="logo">
+                <p>Logo</p>
+            </div>
+            <h1 class="login-h1">{{title}}</h1>
+            <form method="post" action="/customers">
+                <input type='hidden' name='_id' value="{{_id}}">
+                <div class="form-group">
+                    <input type="text" name = "name" id="name" placeholder="Name" required class="form-control form-input">
+                </div>
+                <div class="form-group">
+                    <input type="text" name= "sonOff" id="sonOff" placeholder="Father Name" class="form-control form-input">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="address" id="address" placeholder="Village" class="form-control form-input">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="careOff" id="careOff" placeholder="Care Off" class="form-control form-input">
+                </div>
+                <div class="form-group">
+                    <input type="tel" name="contact" id="contact" placeholder="Contact Number" required class="form-control form-input">
+                </div>
+                <div class="form-group">
+                    <input type="date" name="date" id="date" required class="form-control form-input">
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12" style="overflow: auto;">
+        <div class="panel panel-default">
+            <table id="table" class="table table-responsive table-hover">
+                <thead>
+                    <tr>
+                      <th class="text-center">S.No</th>
+                      <th class="text-center">Item Name</th>
+                      <th class="text-center">Quantity (KG)</th>
+                      <th class="text-center">Rate</th>
+                      <th class="text-center">Total Amount</th>
+                    </tr> 
+                </thead>
+                <tbody id="tbody">
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td class="update" colspan="5">
+                        <a id="add_row" class="btn-floating btn-small waves-effect waves-light blue" onclick="add_row()"><i class="fa fa-plus"></i></a>
+                    </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+                <div class="form-group">
+                    <input type="number" name="totalAmount" id="totalAmount" placeholder="Total Amount" required class="form-control form-input">
+                </div>
+                <div class="form-group">
+                    <input type="number" name="credit" id="credit" placeholder="Credit" required class="form-control form-input">
+                </div>
+                <div class="form-group">
+                    <input type="hidden" name="total" id="total" class="form-control form-input" value="0">
+                </div>
+                <input type="submit" class="form-submit" value="Save">
+            </form>
+        </div>
+        </div>
+
+<script>
+    var bill = 0
+    $(document).on( 'keydown', '.rate_col', function(){
+        if (event.which == 13 && $(this).closest("tr").is(":last-child")) {
+            add_row()
+        }
+    });
+    let items = ["Gulab Jamun", "Rasgulla", "Cham Cham", "Sent Piece", "Julie", "Spongy Rasgulla",
+                "Rasbhari", "Tosha", "Patisa", "SP.Barfi", "N.Barfi", "Kalakand", "Coconut Barfi",
+                "Kaju Katli", "Kaju Mathi", "Chhoti Mathi", "Vadi Mathi", "Mattar", "Balushahi", 
+                "Ladoo", "Bundi", "Paneer", "Dahi", "Pastry", "Cake", "Coldrinks", "Samosa", "Puri",
+                "Paneer Pakoda", "Sabji", "Bread", "Papdi", "Samosa Mathhi", "Bhujia", "Biscuit",
+                "Pinni", "Besan Barfi", "Gajarpak", "Peda", "Khoya", "Khula Paneer", "Ladoo Dana",
+                "Jalebi", "Icecream"]
+    function isNumber(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+    }
+    function change(element) {
+        const arr = element.id.split("_")
+        var total = document.getElementById("total_" + arr[1]);
+        var quant = document.getElementById("quant_" + arr[1]).value;
+        var rate = document.getElementById("rate_" + arr[1]).value;
+        if(rate == "") {
+            total.value = 0;
+        } else if(quant == "") {
+            total.value = rate;
+        } else {
+            total.value = Number(rate) * Number(quant);
+        }
+    }
+    function add_row() {
+        let table = document.getElementById("table")
+        let tbody = document.getElementById("tbody")
+        var tr = document.createElement('tr');
+        for (var j = 0; j < 5; j++) {
+            var td = document.createElement('td');
+            td.id = "input"
+            if (j == 1) {
+                td.classList.add("input");
+                var input = document.createElement('input');
+                var datalist = document.createElement('datalist');
+                input.type = "text";
+                input.id = "item_name";
+                input.name = "item_name_"+bill
+                input.setAttribute('list', "items_list");
+                datalist.id = "items_list";
+                items.forEach(function(item_name){
+                    var option = document.createElement('option');
+                    option.value = item_name;
+                    option.innerHTML = item_name;
+                    datalist.appendChild(option);
+                });
+                input.setAttribute('onkeyup', "find()")
+                td.appendChild(input);
+                td.appendChild(datalist)
+                tr.appendChild(td);
+                continue;
+            }
+            if(j == 2) {
+                td.classList.add("input");
+                var input = document.createElement('input');
+                input.type = "text";
+                input.id = "quant_" + bill
+                input.name = "item_quant_"+bill
+                input.setAttribute('onkeyup', "change(this)")
+                td.appendChild(input);
+                tr.appendChild(td);
+                continue;
+            }
+            if(j == 3) {
+                td.classList.add("input");
+                var input = document.createElement('input');
+                input.type = "text";
+                input.id = "rate_" + bill
+                input.className = "rate_col";
+                input.name = "item_rate_"+bill
+                input.setAttribute('onkeyup', "change(this)")
+                td.appendChild(input);
+                tr.appendChild(td);
+                continue;
+            }
+            if(j == 4) {
+                td.classList.add("input");
+                var input = document.createElement('input');
+                input.type = "text";
+                input.id = "total_" + bill
+                input.name = "item_total_"+bill
+                input.disabled = true;
+                input.value = 0;
+                td.appendChild(input);
+                tr.appendChild(td);
+                continue;
+            }
+            td.appendChild(document.createTextNode(bill + 1));
+            tr.appendChild(td);
+        }
+        bill += 1
+        tbody.appendChild(tr);
+        document.getElementById("total").value = bill;
+    }
+</script>
