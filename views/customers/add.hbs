@@ -1,9 +1,9 @@
 
-        <div class="page-centered">
-            <div class="logo">
+        <div >
+            <div id="logo" class="logo">
                 <p>Logo</p>
             </div>
-            <h1 class="login-h1">{{title}}</h1>
+            <h1 id="title" class="login-h1">{{title}}</h1>
             <form method="post" action="/customers">
                 <input type='hidden' name='_id' value="{{_id}}">
                 <div class="form-group">
@@ -22,10 +22,10 @@
                     <input type="tel" name="contact" id="contact" placeholder="Contact Number" required class="form-control form-input">
                 </div>
                 <div class="form-group">
-                    <input type="date" name="date" id="date" required class="form-control form-input">
+                    <input type="date" name="date" id="date" required class="form-control form-input" value="{{date}}">
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-12" style="overflow: auto;">
+                    <div class="col-md-*" style="overflow: auto;">
         <div class="panel panel-default">
             <table id="table" class="table table-responsive table-hover">
                 <thead>
@@ -50,7 +50,7 @@
         </div>
     </div>
                 <div class="form-group">
-                    <input type="number" name="totalAmount" id="totalAmount" placeholder="Total Amount" required class="form-control form-input">
+                    <input type="number" name="totalAmount" id="totalAmount" placeholder="Total Amount" required class="form-control form-input" value="0">
                 </div>
                 <div class="form-group">
                     <input type="number" name="credit" id="credit" placeholder="Credit" required class="form-control form-input">
@@ -58,12 +58,34 @@
                 <div class="form-group">
                     <input type="hidden" name="total" id="total" class="form-control form-input" value="0">
                 </div>
-                <input type="submit" class="form-submit" value="Save" style="margin-bottom: 40px;">
+                <div class="flex">
+                <input type="submit" class="btn waves-effect waves-light red" value="Save" style="margin-bottom: 40px;" id="sub">
+                <input type="button" class="btn waves-effect waves-light blue" value="Print" onclick="printDiv({{@index}})" id="but">
+                </div>  
             </form>
         </div>
         </div>
 
 <script>
+    document.getElementById('date').valueAsDate = new Date();
+    function printDiv() {
+        document.getElementById("title").style.display = "None";
+        document.getElementById("logo").style.display = "None";
+        document.getElementById("sonOff").style.display = "None";
+        document.getElementById("address").style.display = "None";
+        document.getElementById("careOff").style.display = "None";
+        document.getElementById("sub").style.display = "None";
+        document.getElementById("but").style.display = "None";
+        window.print();
+        document.getElementById("title").style.display = "block";
+        document.getElementById("logo").style.display = "block";
+        document.getElementById("sonOff").style.display = "block";
+        document.getElementById("address").style.display = "block";
+        document.getElementById("careOff").style.display = "block";
+        document.getElementById("sub").style.display = "block";
+        document.getElementById("but").style.display = "block";
+
+    }
     var bill = 0
     $(document).on( 'keydown', '.rate_col', function(){
         if (event.which == 13 && $(this).closest("tr").is(":last-child")) {
@@ -77,14 +99,15 @@
                 "Paneer Pakoda", "Sabji", "Bread", "Papdi", "Samosa Mathhi", "Bhujia", "Biscuit",
                 "Pinni", "Besan Barfi", "Gajarpak", "Peda", "Khoya", "Khula Paneer", "Ladoo Dana",
                 "Jalebi", "Icecream"]
-    function isNumber(n) {
-        return !isNaN(parseFloat(n)) && isFinite(n);
-    }
     function change(element) {
         const arr = element.id.split("_")
+        var amount = document.getElementById("totalAmount");
         var total = document.getElementById("total_" + arr[1]);
         var quant = document.getElementById("quant_" + arr[1]).value;
         var rate = document.getElementById("rate_" + arr[1]).value;
+        if(total.value != "") {
+            amount.value = Number(amount.value) - Number(total.value);
+        }
         if(rate == "") {
             total.value = 0;
         } else if(quant == "") {
@@ -92,6 +115,7 @@
         } else {
             total.value = Number(rate) * Number(quant);
         }
+        amount.value = Number(amount.value) + Number(total.value);
     }
     function add_row() {
         let table = document.getElementById("table")

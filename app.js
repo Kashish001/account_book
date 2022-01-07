@@ -76,5 +76,5 @@ app.use('/transaction', require('./routes/transaction'))
 app.use('/null', require('./routes/null'))
 app.use('/bill', require('./routes/bill'))
 
-const PORT = process.env .PORT || 3000
+const PORT = process.env.PORT || 3003
 app.listen(PORT, console.log(`Server running in ${ process.env.NODE_ENV } on port ${ PORT }`))

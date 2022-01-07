@@ -1,9 +1,9 @@
 {{#if data}}
-  <div class='search_div'>
+    <div class='search_div'>
     <input type="text" id="search" placeholder="Search...">
     <i class="material-icons icon">search</i>
   </div>
-    <div class="col-sm-12" style="overflow: auto;">
+    <div class="col-md-12" style="overflow: auto;">
         <div class="panel panel-default">
             <table id="table" class="table table-responsive table-hover">
                 <thead>
@@ -54,7 +54,7 @@
                   
                     <tr class="collapse bill{{@index}}">
                       <td colspan="999">
-                        <div>
+                        <div id="bill{{@index}}">
                           <table class="table table-responsive table-striped">
                             <thead>
                               <tr>
@@ -69,9 +69,9 @@
                             {{#each bill}}
                               <tr>
                                 <td>{{indexing @index}}</td>
-                                <td class="success">{{item_name}}</td>
-                                <td class="danger">{{item_quant}}</td>
-                                <td class='amount'>{{item_rate}}</td>
+                                <td>{{item_name}}</td>
+                                <td>{{item_quant}}</td>
+                                <td>{{item_rate}}</td>
                                 <td class='amount'>{{item_total}}</td>
                                 <td class="edit">
                                   <a href="bill/update/{{../_id}}/{{@index}}"><i class="material-icons" style="transform: translate(-30px, 0px);">edit</i></a>
